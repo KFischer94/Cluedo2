@@ -1,0 +1,204 @@
+Cluedo
+Ich möchte das Brettspiel Cluedo in C++ programmieren. Als Eingabe bekommt man eine Spielbrettkonfiguration und eine Datenstruktur mit Bildern.
+Ablauf:
+- Programm wird gestartet
+	1. öffne Startfenster
+		- neues Spiel starten
+			-Benutzeroberfläche um Spieleinstellungen zu setzen
+			-Spielvorbereitung
+				- Karten, die die Mordumstände beschreiben festlegen
+				- Alle weiteren Karten auf die Spieler aufteilen
+		- Spiel laden
+			-Spieleinstellungen und Spielzustand laden.
+		- Spiel schließen
+	
+	2. Spielablauf
+		- Jeder Spieler ist nacheinander an der Reihe.
+		- Der Spieler kann sich zu Beginn seines Zuges entweder in einem Raum befinden oder auf dem Raster.
+			- Befindet sich der Spieler auf dem Raster hat er folgende Möglichkeiten:
+				- Er kann eine Vermutung aufstellen.
+				- Er kann würfeln und seine Spielfigur setzen.
+			- Befindet sich der Spieler in einem Raum hat er folgende Möglichkeiten:
+				- Er kann eine Vermutung aufstellen.
+				- Er kann einen der Geheimgänge nutzen.
+				- Er kann würfeln um den Raum zu verlassen.
+				- Er kann eine Frage stellen.
+			Dabei bedeutet:
+				- Geheimgänge benutzen: Der Spieler darf seine Spielfigur in einen der durch einen Geheimgang verbundenen Raum setzen, falls er die Karte, die dem verbundenen Raum zugeordnet ist, nicht besitzt.
+					- Anschließend hat er folgende Möglichkeiten:
+						- Er kann würfeln und den Raum verlassen.
+						- Er kann eine Frage stellen.
+				- Würfeln: Der Spieler darf seine Spielfigur um die gewürfelte Anzahl Felder von seiner aktuellen Position setzen.
+					- Befindet er sich in einem Raum darf er den Raum durch jede Tür verlassen.
+					- Liegt die Tür eines Raumes im erreichbaren Bereich, darf der Raum betreten werden.
+					- Der Spieler kann folgende Zustände erreichen:
+						- Der Spieler endet auf dem Raster und der Zug endet.
+						- Der Spieler befindet sich in einem Raum er hat folgende Möglichkeiten:
+							-Er kann eine Frage stellen.
+							-Er kann seinen Zug beenden.
+				- Frage stellen:
+					- Der Spieler fragt die Spieler reihum, ob sie denken, dass der Mord mit einem Objekt aus jeder Kategorie begangen wurde.
+					- Die Karte, die dem Raum zugeordnet ist muss in der Frage enthalten sein.
+					- Ist das Objekt einer der Spielfiguren zugeordnet, wird diese in den Raum des Fragenden gesetzt.
+					- Hat der gefragte Spieler eine der Karten die genannt wurden:
+						- muss er diese dem Fragenden zeigen.
+						- Alle anderen Spieler erhalten die Information das eine Karte gezeigt wurde.
+						- und der Zug wird beendet.
+					- Hat der gefragte Spieler mehrere der Karten, die genannt wurden:
+						- darf er auswählen welche der Karten er dem Fragenden zeigt.
+						- Alle anderen Spieler erhalten die Information das eine Karte gezeigt wurde.
+						- und der Zug wird beendet.
+					- Hat der Spieler keine der Karten, wird die Frage dem nächsten Spieler der Liste gestellt.
+					- Hat keiner der Spieler, außer dem Fragenden, eine der Karten, kommt eine Meldung und der nächste Spieler ist an der Reihe.
+				- Vermutung stellen:
+					- Der Spieler muss angeben welche Karten er in den Mordumständen erwartet.
+					- Sind alle Karten in den Mordumständen enthalten hat er das Spiel gewonnen.
+					- Ansonsten scheidet er bei den Spielzügen aus und darf nur noch Karten zeigen, wenn ein anderer Spieler fragt.
+	
+Komponenten:
+-Spieleinstellungen:
+	- welches Spielset wird gespielt
+	- Würfelauswahl
+	- Mordumstände
+	- Anzahl der Mitspieler
+-Würfel:
+	- Die Anzahl der Würfel und die Würfelart (maximale Anzahl der Augen) soll in einer Konfigurationsdatei festgelegt werden können.
+	- Beim Würfeln wird pro Würfel eine zufällig Zahl aus dem Bereich zwischen 1 und der angegebenen maximalen Anzahl Augen des Würfels ausgewählt und dem Spielenden angezeigt.
+-Spielfeld:
+	- Wird eingelesen aus Datei Spielbrettkonfiguration.
+	- Das Spielfeld besteht aus einem Bild, dass das Spielfeld darstellt und einer JSON Datei, die die Positionen der Wege, Räume, Türen und Startposition der Spielfiguren abbildet.
+		- Format der Wege und Räume ist definiert in der Spielbrettkonfiguration
+	- Die Räume werden verbunden durch ein Raster aus Feldern.
+	- Man kann jeden Raum betreten durch Türen die mit dem Raster verbunden sind.
+	- Zusätzlich gibt es Geheimgänge, die Räume direkt miteinander verbinden.
+-Raum:
+	- Werden eingelesen aus Datei Spielbrettkonfiguration
+	- Position des Raums auf dem Spielfeld.
+	- Jeder Raum hat mindestens eine Türe.
+	- Räume können Geheimgänge haben.
+	- Jedem Raum muss eine der Karten zugeordnet sein.
+-Tür:
+	- Werden eingelesen aus Datei Spielbrettkonfiguration.
+	- Jede Tür hat einen zugeordneten Raum.
+	- Jede Tür hat eine Position auf dem Spielfeld. 
+-Spieler:
+	- Jedem Spieler ist eine der Figuren zugeordnet, die er bewegen kann.
+-Karten:
+	- Die Karten bestehen aus einer Kategorie und einem Bild (durch die Dateistruktur gegeben).
+	- Mordumstand
+		- Die Anzahl soll festgelegt werden können.
+		- Die Karten sollen entweder aus unterschiedlichen Kategorien oder zufällig aus allen Karten ausgewählt werden.
+-Speicherstand:
+	- Spielset
+	- Liste der Spieler
+	- Position der Spieler auf dem Spielbrett
+	- Welcher Spieler hat welche Karten
+	- Was sind die Mordkarten
+	- Welcher Spieler hat bereits eine Vermutung aufgestellt.
+	- Welcher Spieler ist an der Reihe.
+		
+visuelle Komponenten:
+- Menüleiste am oberen Rand der Anwendung
+	- neues Spiel starten, Spiel laden, speichern, schließen.
+- Benutzerinteraktion zum Initialisieren
+	- Startfenster
+		- neues Spiel starten
+		- Spiel laden
+		- Spiel schließen
+	- Spieleinstellungsfenster
+		1. Dropdown Menü mit den Spielsets aus der Dateistruktur
+			- Wie viele Mordumstandkarten
+			- Aus welchen Kategorien sollen die Mordumstände gewählt werden
+				- aus unterschiedlichen Kategorien
+				- aus allen Karten
+			- Anzahl der Mitspieler -> darf die maximale Anzahl für das ausgwählte Spielset nicht überschreiten.
+			
+		
+- Würfel:
+	- Die Anzeige soll oben rechts neben dem Spielfeld angezeigt werden.
+- Spielfeld:
+	- Anzeige des Bildes "Spielbrett.png"
+- Figuren:
+	- Werden zu Beginn auf der Startposition angezeigt.
+	- Können vom zugeordneten Spieler während seines Zuges auf dem Raster gesetzt werden.
+- Karten:
+	- Die Karten bestehen aus einer Kategorie und einem Bild (durch die Dateistruktur gegeben).
+	- Mordumstand
+		- Die Anzahl soll festgelegt werden können.
+		- Die Karten sollen entweder aus unterschiedlichen Kategorien oder zufällig aus allen Karten ausgewählt werden.
+
+
+Format der Spielbrettkonfiguration im JSON format:
+	- maximale Spieleranzahl
+	- Startposition der Spielfiguren (Anzahl muss der maximalen Spieleranzahl entsprechen)
+	- Positionen der Wegraster
+		-
+	- Räume:
+		- Name
+		- Position der Räume
+		- Türen aus diesem Raum
+		- Geheimgänge
+		- Zugeordneten Karte (kann leer sein und entspricht dem Namen des Raums)
+	- Türen: Map von Raum zu Position auf dem Weg
+
+
+Dateistruktur Spielsetup:
+[] wird ersetzt durch den Namen der im Spiel verwendet werden soll
+Spielsets
+|->[Spielname]
+	|->Karten
+		|->[Kategorie]
+			|->[Kartenbild].png
+	|->Spielbrett
+		|->Spielbrett.png
+		|->Spielbrettkonfiguration.json
+		
+Diskutiere mit mir den Ablauf und die Architektur. Was muss ich noch ergänzen für ein ordentliches Programm?
+
+
+
+Cluedo Spielbrettkonfiguration:
+Ich möchte eine Konfigurationsdatei für ein Cluedospiel mit C++ erstellen. Als Build System soll CMake verwendet werden. Die Zielplattform ist Windows. Als Graphische Oberfläche möchte ich Qt6 verwenden. Als Eingabe bekommt man eine Dateipfad zu einem Bild und einen Ausgabepfad für die Konfigurationsdatei. In der Konfigurationsdatei soll enthalten sein:
+	- maximale Spieleranzahl (ergibt sich aus der Anzahl der angelegten Spielfiguren)
+	- Startposition der Spielfiguren
+	- Startpunkt des Rasters
+	- Länge und Breite eines Feldes im Raster
+	- Räume:
+		- Name
+		- Positionen des Raums
+		- Türen aus diesem Raum
+		- Geheimgänge zu anderen Räumen (kann leer sein -> keine Geheimgänge)
+		- Dateipfad zum Kartenbild (kann leer sein und entspricht dem Namen des Raums)
+	- Türen: Map von Raum zu Position auf dem Weg werden anschließenden Räumen zugeordnet.
+	- Wege: Positionen der Wege
+	
+
+Ablauf:
+	- Starten des Programms
+		- Dateipfad zum Bild
+		- Ausgabedateipfad
+	- Bild laden und im Fenster anzeigen
+	- Ein Button um einen neuen Raum zu erstellen. 
+		- Öffne einen Dialog mit folgenden Eingabefeldern:
+			- Angabe eines Namens
+			- Angabe eines Dateipfades zu einer zugeordneten Karte (schlägt nach Eingabe des Namens den Pfad "/Raum/[Name].png" vor
+	- Ein Button um eine neue Spielfigur zu erstellen. 
+		- Öffne einen Dialog mit folgenden Eingabefeldern:
+			- Angabe eines Namens
+			- Angabe eines Dateipfades zu einer zugeordneten Karte (schlägt nach Eingabe des Namens den Pfad "/Raum/[Name].png" vor
+	- Ein Schieberegler soll zwischen Gittereinstellung und Gitterzuordnung unterscheiden. Standardmäßig soll in der Gittereinstellung begonnen werden und ein Gitter angelegt werden. Dieses Gitter soll über das Bild gelegt werden, sodass man Positionen im Bild den bei Gitterzuordnung definierten Kategorien zuordnen kann.
+		- Gittereinstellungen:
+			- Zwei Eingabefelder für x und y Position des Startpunkts des Rasters - Standard start (0,0)
+			- Zwei Eingabefelder für die Länge und Breite eines Rasterfeldes - Standard 100, 100
+			- Zwei Eingabefelder für die Anzahl an Zellen in der Höhe und Breite - Standard 20, 20
+			- Anhand dieser Felder soll ein Raster generiert werden, dass auf dem Bild verschoben und gezoomt werden kann und die Eingabefelder anpasst.
+		- Gitterzuordnung:
+			- Jedem Feld im Gitter muss einer der Zustände zugeordnet werden:
+				- leeres Feld
+				- Weg
+				- Raum (Auswahl zu welchem Raum)
+				- Tür
+				- Startposition Spielfigur (Auswahl der Spielfigur)
+			- Es muss eine Auswahl der einzelnen Kategorien geben. Sodass man dann durch klicken und ziehen Felder eine Kategorie zuordnen kann.
+	- Speichern am Ausgabepfad im JSON format.
+		- Wenn es Räume und Spielfiguren ohne zugeordnete Positionen gibt, einen Fehler ausgeben der den Namen des Raums oder der Spielfigur und den Typ enthält.
