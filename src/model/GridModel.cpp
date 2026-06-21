@@ -1,6 +1,7 @@
 #include "GridModel.h"
 
 #include <algorithm>
+#include <array>
 #include <stdexcept>
 
 namespace Cluedo {

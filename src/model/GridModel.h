@@ -2,6 +2,7 @@
 
 #include "CellState.h"
 
+#include <QList>
 #include <QPoint>
 #include <QSize>
 #include <vector>

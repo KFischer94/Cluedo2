@@ -1,3 +1,3 @@
 #pragma once
 #include <QWidget>
-namespace Cluedo { class MainWindow : public QWidget { Q_OBJECT public: explicit MainWindow(QWidget* parent = nullptr); }; }
+namespace Cluedo { class MainWindow : public QWidget { public: explicit MainWindow(QWidget* parent = nullptr); }; }
