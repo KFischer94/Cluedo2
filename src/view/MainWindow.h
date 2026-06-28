@@ -7,7 +7,9 @@ namespace Cluedo {
 
 class BoardView;
 class GridSettingsPanel;
+class ToolBar;
 class BoardConfig;
+enum class AppMode;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -24,6 +26,9 @@ private slots:
     void onGridOriginChanged(int x, int y);
     void onCellSizeChanged(int w, int h);
     void onGridDimensionsChanged(int cols, int rows);
+    void onModeChanged(AppMode mode);
+    void onAddRoom();
+    void onAddPiece();
 
 private:
     void buildMenuBar();
@@ -33,6 +38,7 @@ private:
 
     BoardView*         m_boardView    { nullptr };
     GridSettingsPanel* m_settingsPanel{ nullptr };
+    ToolBar*           m_toolBar      { nullptr };
     BoardConfig*       m_config       { nullptr };
 
     QString m_imagePath;
