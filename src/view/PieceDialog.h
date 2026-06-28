@@ -1,3 +1,3 @@
 #pragma once
-#include <QWidget>
-namespace Cluedo { class PieceDialog : public QWidget { public: explicit PieceDialog(QWidget* parent = nullptr); }; }
+#include <QDialog>
+namespace Cluedo { class PieceDialog : public QDialog { public: explicit PieceDialog(QWidget* parent = nullptr); }; }

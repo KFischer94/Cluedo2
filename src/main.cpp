@@ -1,30 +1,40 @@
 #include <QApplication>
+#include <QCommandLineParser>
+#include <QMessageBox>
 
-// Phase 1 smoke test – instantiates the model without UI.
-#include "model/BoardConfig.h"
-#include <QDebug>
+#include "view/MainWindow.h"
 
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
+    app.setApplicationName(QStringLiteral("CluedoBoardConfigurator"));
+    app.setApplicationVersion(QStringLiteral("1.0.0"));
 
-    Cluedo::BoardConfig config(20, 20);
+    QCommandLineParser parser;
+    parser.setApplicationDescription(
+        QStringLiteral("Cluedo Spielbrettkonfigurator"));
+    parser.addHelpOption();
+    parser.addVersionOption();
 
-    Cluedo::Room kitchen;
-    kitchen.name      = "Küche";
-    kitchen.imagePath = Cluedo::Room::defaultImagePath("Küche");
-    config.addRoom(kitchen);
+    QCommandLineOption imageOpt(
+        QStringList{ QStringLiteral("i"), QStringLiteral("image") },
+        QStringLiteral("Pfad zum Spielfeldbild."),
+        QStringLiteral("Bildpfad"));
+    parser.addOption(imageOpt);
 
-    Cluedo::GamePiece scarlett;
-    scarlett.name          = "Scarlett";
-    scarlett.imagePath     = Cluedo::GamePiece::defaultImagePath("Scarlett");
-    scarlett.startPosition = { 1, 0 };
-    config.addPiece(scarlett);
+    QCommandLineOption outputOpt(
+        QStringList{ QStringLiteral("o"), QStringLiteral("output") },
+        QStringLiteral("Ausgabepfad für die JSON-Konfigurationsdatei."),
+        QStringLiteral("Ausgabepfad"));
+    parser.addOption(outputOpt);
 
-    qDebug() << "Rooms:"  << config.rooms().size();
-    qDebug() << "Pieces:" << config.pieces().size();
-    qDebug() << "maxPlayers:" << config.maxPlayers();
+    parser.process(app);
 
-    // Phase 2+ will launch MainWindow here.
-    return 0;
+    const QString imagePath  = parser.value(imageOpt);
+    const QString outputPath = parser.value(outputOpt);
+
+    Cluedo::MainWindow window(imagePath, outputPath);
+    window.show();
+
+    return app.exec();
 }

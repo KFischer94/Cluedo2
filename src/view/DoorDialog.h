@@ -1,3 +1,3 @@
 #pragma once
-#include <QWidget>
-namespace Cluedo { class DoorDialog : public QWidget { public: explicit DoorDialog(QWidget* parent = nullptr); }; }
+#include <QDialog>
+namespace Cluedo { class DoorDialog : public QDialog { public: explicit DoorDialog(QWidget* parent = nullptr); }; }
