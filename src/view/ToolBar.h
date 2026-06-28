@@ -56,7 +56,6 @@ signals:
 
 private slots:
     void onSliderValueChanged(int value);
-    void onToolButtonClicked();
 
 private:
     void buildUi();
